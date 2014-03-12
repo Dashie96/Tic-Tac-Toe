@@ -12,14 +12,14 @@ package tic.tac.toe;
  */
 public class Frame extends javax.swing.JFrame
 {
-
+    Rules rule = new Rules();
     /**
      * Creates new form Frame
      */
     public Frame()
     {
         initComponents();
-        Rules rule = new Rules();
+        
     }
 
     /**

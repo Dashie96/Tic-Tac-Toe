@@ -13,4 +13,13 @@ package tic.tac.toe;
 public class Rules
 {
     
+    public Rules()
+    {
+        
+    }
+    
+    public char pressed(int colum, int row)
+    {
+        return 'o';
+    }
 }
