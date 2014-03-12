@@ -10,15 +10,7 @@ package tic.tac.toe;
  *
  * @author 20142600
  */
-public class TicTacToe
+public class AI
 {
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args)
-    {   
-        Frame.start();
-    }
     
 }
