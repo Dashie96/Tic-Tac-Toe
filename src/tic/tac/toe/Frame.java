@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package tic.tac.toe;
+
+import javax.swing.JTable;
 
 /**
  *
@@ -12,14 +13,23 @@ package tic.tac.toe;
  */
 public class Frame extends javax.swing.JFrame
 {
-    Rules rule = new Rules();
+
+    Rules rule = new Rules(this);
+    AI ai = new AI();
+    boolean gameover = false;
+    String winner = "Good Luck";
+
     /**
      * Creates new form Frame
      */
     public Frame()
     {
         initComponents();
-        
+        initTable();
+        if (!rule.turn()) {
+            ai.takeTurn(this, rule);
+        }
+        jLabel1.setText(winner);
     }
 
     /**
@@ -43,6 +53,8 @@ public class Frame extends javax.swing.JFrame
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -158,13 +170,32 @@ public class Frame extends javax.swing.JFrame
             }
         });
 
+        jButton10.setText("Reset");
+        jButton10.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton10ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("jLabel1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(jButton10))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(jLabel1)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -177,9 +208,9 @@ public class Frame extends javax.swing.JFrame
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 27, Short.MAX_VALUE)
+                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -203,9 +234,13 @@ public class Frame extends javax.swing.JFrame
                             .addComponent(jButton8)
                             .addComponent(jButton9)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addGap(7, 7, 7)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton10)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -213,48 +248,226 @@ public class Frame extends javax.swing.JFrame
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
     {//GEN-HEADEREND:event_jButton3ActionPerformed
-        rule.pressed(1,3);
+        if (!gameover) {
+            if (rule.turn()) {
+                if (rule.check(2, 0)) {
+                    rule.pressed(2, 0);
+                    if (rule.changeTurn()) {
+                        ai.takeTurn(this, rule);
+                        if (!rule.winner().equalsIgnoreCase(winner)) {
+                            gameover = true;
+                            winner = rule.winner();
+                            jLabel1.setText(winner);
+                        }
+                    }
+                    else {
+                        gameover = true;
+                        winner = rule.winner();
+                        jLabel1.setText(winner);
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
-        rule.pressed(1,1);
+        if (!gameover) {
+            if (rule.turn()) {
+                if (rule.check(0, 0)) {
+                    rule.pressed(0, 0);
+                    if (rule.changeTurn()) {
+                        ai.takeTurn(this, rule);
+                        if (!rule.winner().equalsIgnoreCase(winner)) {
+                            gameover = true;
+                            winner = rule.winner();
+                            jLabel1.setText(winner);
+                        }
+                    }
+                    else {
+                        gameover = true;
+                        winner = rule.winner();
+                        jLabel1.setText(winner);
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
     {//GEN-HEADEREND:event_jButton2ActionPerformed
-        rule.pressed(1,2);
+        if (!gameover) {
+            if (rule.turn()) {
+                if (rule.check(1, 0)) {
+                    rule.pressed(1, 0);
+                    if (rule.changeTurn()) {
+                        ai.takeTurn(this, rule);
+                        if (!rule.winner().equalsIgnoreCase(winner)) {
+                            gameover = true;
+                            winner = rule.winner();
+                            jLabel1.setText(winner);
+                        }
+                    }
+                    else {
+                        gameover = true;
+                        winner = rule.winner();
+                        jLabel1.setText(winner);
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton4ActionPerformed
     {//GEN-HEADEREND:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        if (!gameover) {
+            if (rule.turn()) {
+                if (rule.check(0, 1)) {
+                    rule.pressed(0, 1);
+                    if (rule.changeTurn()) {
+                        ai.takeTurn(this, rule);
+                        if (!rule.winner().equalsIgnoreCase(winner)) {
+                            gameover = true;
+                            winner = rule.winner();
+                            jLabel1.setText(winner);
+                        }
+                    }
+                    else {
+                        gameover = true;
+                        winner = rule.winner();
+                        jLabel1.setText(winner);
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton5ActionPerformed
     {//GEN-HEADEREND:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        if (!gameover) {
+            if (rule.turn()) {
+                if (rule.check(1, 1)) {
+                    rule.pressed(1, 1);
+                    if (rule.changeTurn()) {
+                        ai.takeTurn(this, rule);
+                        if (!rule.winner().equalsIgnoreCase(winner)) {
+                            gameover = true;
+                            winner = rule.winner();
+                            jLabel1.setText(winner);
+                        }
+                    }
+                    else {
+                        gameover = true;
+                        winner = rule.winner();
+                        jLabel1.setText(winner);
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton6ActionPerformed
     {//GEN-HEADEREND:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+        if (!gameover) {
+            if (rule.turn()) {
+                if (rule.check(2, 1)) {
+                    rule.pressed(2, 1);
+                    if (rule.changeTurn()) {
+                        ai.takeTurn(this, rule);
+                        if (!rule.winner().equalsIgnoreCase(winner)) {
+                            if (!rule.winner().equalsIgnoreCase(winner)) {
+                                gameover = true;
+                                winner = rule.winner();
+                                jLabel1.setText(winner);
+                            }
+                        }
+                    }
+                    else {
+                        gameover = true;
+                        winner = rule.winner();
+                        jLabel1.setText(winner);
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton7ActionPerformed
     {//GEN-HEADEREND:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        if (!gameover) {
+            if (rule.turn()) {
+                if (rule.check(0, 2)) {
+                    rule.pressed(0, 2);
+                    if (rule.changeTurn()) {
+                        ai.takeTurn(this, rule);
+                        if (!rule.winner().equalsIgnoreCase(winner)) {
+                            gameover = true;
+                            winner = rule.winner();
+                            jLabel1.setText(winner);
+                        }
+                    }
+                    else {
+                        gameover = true;
+                        winner = rule.winner();
+                        jLabel1.setText(winner);
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton8ActionPerformed
     {//GEN-HEADEREND:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+        if (!gameover) {
+            if (rule.turn()) {
+                if (rule.check(1, 2)) {
+                    rule.pressed(1, 2);
+                    if (rule.changeTurn()) {
+                        ai.takeTurn(this, rule);
+                        if (!rule.winner().equalsIgnoreCase(winner)) {
+                            gameover = true;
+                            winner = rule.winner();
+                            jLabel1.setText(winner);
+                        }
+                    }
+                    else {
+                        gameover = true;
+                        winner = rule.winner();
+                        jLabel1.setText(winner);
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton9ActionPerformed
     {//GEN-HEADEREND:event_jButton9ActionPerformed
-        // TODO add your handling code here:
+        if (!gameover) {
+            if (rule.turn()) {
+                if (rule.check(2, 2)) {
+                    rule.pressed(2, 2);
+                    if (rule.changeTurn()) {
+                        ai.takeTurn(this, rule);
+                        if (!rule.winner().equalsIgnoreCase(winner)) {
+                            gameover = true;
+                            winner = rule.winner();
+                            jLabel1.setText(winner);
+                        }
+                    }
+                    else {
+                        gameover = true;
+                        winner = rule.winner();
+                        jLabel1.setText(winner);
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton10ActionPerformed
+    {//GEN-HEADEREND:event_jButton10ActionPerformed
+        //reset board, and the turn
+    }//GEN-LAST:event_jButton10ActionPerformed
 
     /**
      * Starts the shit
@@ -266,31 +479,24 @@ public class Frame extends javax.swing.JFrame
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try
-        {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
-            {
-                if ("Nimbus".equals(info.getName()))
-                {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         }
-        catch (ClassNotFoundException ex)
-        {
+        catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        catch (InstantiationException ex)
-        {
+        catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        catch (IllegalAccessException ex)
-        {
+        catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        catch (javax.swing.UnsupportedLookAndFeelException ex)
-        {
+        catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -306,8 +512,23 @@ public class Frame extends javax.swing.JFrame
         });
     }
 
+    private void initTable()
+    {
+        for (int x = 0; x < 3; x++) {
+            for (int y = 0; y < 3; y++) {
+                jTable1.setValueAt(' ', x, y);
+            }
+        }
+    }
+
+    public JTable getTable()
+    {
+        return jTable1;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -316,7 +537,9 @@ public class Frame extends javax.swing.JFrame
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
 }
