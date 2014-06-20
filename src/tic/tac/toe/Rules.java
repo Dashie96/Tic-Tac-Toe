@@ -53,6 +53,17 @@ public class Rules
     {
         return turn;//true for human/false for ai
     }
+    
+    public void turnReset()
+    {
+        Random rand = new Random();
+        turn = rand.nextBoolean();
+    }
+    
+    public void resetWinner()
+    {
+        winner = "Good Luck";
+    }
     public boolean changeTurn()
     {
         //first check if someone won!

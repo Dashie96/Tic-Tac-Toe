@@ -253,7 +253,7 @@ public class Frame extends javax.swing.JFrame
                 if (rule.check(2, 0)) {
                     rule.pressed(2, 0);
                     if (rule.changeTurn()) {
-                        ai.takeTurn(this, rule);
+                        ai.takeTurn(this, rule, new Coordinate(2, 0));
                         if (!rule.winner().equalsIgnoreCase(winner)) {
                             gameover = true;
                             winner = rule.winner();
@@ -277,7 +277,7 @@ public class Frame extends javax.swing.JFrame
                 if (rule.check(0, 0)) {
                     rule.pressed(0, 0);
                     if (rule.changeTurn()) {
-                        ai.takeTurn(this, rule);
+                        ai.takeTurn(this, rule, new Coordinate(0, 0));
                         if (!rule.winner().equalsIgnoreCase(winner)) {
                             gameover = true;
                             winner = rule.winner();
@@ -301,7 +301,7 @@ public class Frame extends javax.swing.JFrame
                 if (rule.check(1, 0)) {
                     rule.pressed(1, 0);
                     if (rule.changeTurn()) {
-                        ai.takeTurn(this, rule);
+                        ai.takeTurn(this, rule, new Coordinate(1, 0));
                         if (!rule.winner().equalsIgnoreCase(winner)) {
                             gameover = true;
                             winner = rule.winner();
@@ -325,7 +325,7 @@ public class Frame extends javax.swing.JFrame
                 if (rule.check(0, 1)) {
                     rule.pressed(0, 1);
                     if (rule.changeTurn()) {
-                        ai.takeTurn(this, rule);
+                        ai.takeTurn(this, rule, new Coordinate(0, 1));
                         if (!rule.winner().equalsIgnoreCase(winner)) {
                             gameover = true;
                             winner = rule.winner();
@@ -349,7 +349,7 @@ public class Frame extends javax.swing.JFrame
                 if (rule.check(1, 1)) {
                     rule.pressed(1, 1);
                     if (rule.changeTurn()) {
-                        ai.takeTurn(this, rule);
+                        ai.takeTurn(this, rule, new Coordinate(1, 1));
                         if (!rule.winner().equalsIgnoreCase(winner)) {
                             gameover = true;
                             winner = rule.winner();
@@ -373,7 +373,7 @@ public class Frame extends javax.swing.JFrame
                 if (rule.check(2, 1)) {
                     rule.pressed(2, 1);
                     if (rule.changeTurn()) {
-                        ai.takeTurn(this, rule);
+                        ai.takeTurn(this, rule, new Coordinate(2, 1));
                         if (!rule.winner().equalsIgnoreCase(winner)) {
                             if (!rule.winner().equalsIgnoreCase(winner)) {
                                 gameover = true;
@@ -399,7 +399,7 @@ public class Frame extends javax.swing.JFrame
                 if (rule.check(0, 2)) {
                     rule.pressed(0, 2);
                     if (rule.changeTurn()) {
-                        ai.takeTurn(this, rule);
+                        ai.takeTurn(this, rule, new Coordinate(0,2));
                         if (!rule.winner().equalsIgnoreCase(winner)) {
                             gameover = true;
                             winner = rule.winner();
@@ -423,7 +423,7 @@ public class Frame extends javax.swing.JFrame
                 if (rule.check(1, 2)) {
                     rule.pressed(1, 2);
                     if (rule.changeTurn()) {
-                        ai.takeTurn(this, rule);
+                        ai.takeTurn(this, rule, new Coordinate(1, 2));
                         if (!rule.winner().equalsIgnoreCase(winner)) {
                             gameover = true;
                             winner = rule.winner();
@@ -447,7 +447,7 @@ public class Frame extends javax.swing.JFrame
                 if (rule.check(2, 2)) {
                     rule.pressed(2, 2);
                     if (rule.changeTurn()) {
-                        ai.takeTurn(this, rule);
+                        ai.takeTurn(this, rule, new Coordinate(2, 2));
                         if (!rule.winner().equalsIgnoreCase(winner)) {
                             gameover = true;
                             winner = rule.winner();
@@ -466,7 +466,16 @@ public class Frame extends javax.swing.JFrame
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton10ActionPerformed
     {//GEN-HEADEREND:event_jButton10ActionPerformed
-        //reset board, and the turn
+        //stuff i need to reset
+        initTable();
+        winner = "Good Luck";
+        jLabel1.setText(winner);
+        rule.turnReset();
+        rule.resetWinner();
+        gameover = false; 
+        if (!rule.turn()) {
+            ai.takeTurn(this, rule);
+        }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     /**
