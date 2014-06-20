@@ -10,23 +10,57 @@ import java.util.Random;
 
 /**
  *
- * @author 20142600
+ * @author Dashie96
  */
 public class AI
 {
-    ArrayList<ArrayList> firstGame;//game where i move first
-    ArrayList<ArrayList> secondGame;//game where i move second
-    ArrayList<Coordinate> coords;//the coordinates of the Humans moves(previously)
+
+    ArrayList<Game> games;//games i have won (resets when closed.)
+    Game game;
     Random rand = new Random();
 
     public AI()
     {
-        this.firstGame = new ArrayList<ArrayList>();
-        this.secondGame = new ArrayList<ArrayList>();
-        this.coords = new ArrayList<Coordinate>();
+        games = new ArrayList<>();
     }
 
     public void takeTurn(Frame frame, Rules rule, Coordinate prev)
+    {
+        this.game.addCoords(prev);
+        boolean foundWin = false;
+        if (!rule.turn()) {
+            for (Game game : games) {
+                for (int i = 0; game.getCoords().get(i) == this.game.getCoords().get(i); i++) {
+                    if (this.game.getTurns() == i) {
+                        Coordinate chord;//use this to win
+                        chord = (Coordinate) game.getCoords().get(this.game.getTurns());
+                        if (rule.check(chord.getX(), chord.getY())) {
+                            rule.pressed(chord.getX(), chord.getY());
+                            rule.changeTurn();
+                            this.game.addCoords(chord);
+                            foundWin = true;    
+                        }
+                        break;
+                    }
+                }
+            }
+
+            if (!foundWin) {
+                int row = rand.nextInt(3);
+                int colum = rand.nextInt(3);
+                if (rule.check(colum, row)) {
+                    rule.pressed(colum, row);
+                    this.game.addCoords(new Coordinate(colum, row));
+                    rule.changeTurn();
+                }
+                else {
+                    takeTurn(frame, rule);
+                }
+            }
+        }
+    }
+
+    public void takeTurn(Frame frame, Rules rule)
     {
         if (!rule.turn()) {
             int row = rand.nextInt(3);
@@ -40,19 +74,21 @@ public class AI
             }
         }
     }
-    
-    public void takeTurn(Frame frame, Rules rule)
+
+    public void firstTurn()
     {
-                if (!rule.turn()) {
-            int row = rand.nextInt(3);
-            int colum = rand.nextInt(3);
-            if (rule.check(colum, row)) {
-                rule.pressed(colum, row);
-                rule.changeTurn();
-            }
-            else {
-                takeTurn(frame, rule);
-            }
-        }
+        game = new Game(true);
+    }
+
+    public void secondTurn()
+    {
+        game = new Game(false);
+    }
+
+    public void reset()
+    {
+        //stores the previous game into the array
+        this.games.add(this.game);
+        //if we lost the game will be reset
     }
 }

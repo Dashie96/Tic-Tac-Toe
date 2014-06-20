@@ -10,7 +10,7 @@ import java.util.Random;
 
 /**
  *
- * @author 20142600
+ * @author Dashie96
  */
 public class Rules
 {
@@ -48,7 +48,6 @@ public class Rules
         
     }
     
-    
     public boolean turn()
     {
         return turn;//true for human/false for ai
@@ -64,6 +63,7 @@ public class Rules
     {
         winner = "Good Luck";
     }
+   
     public boolean changeTurn()
     {
         //first check if someone won!
@@ -205,13 +205,9 @@ public class Rules
         turn = !turn;
         return true;
     }
-    
-
-    
-
+   
     public String winner()
     {
         return winner;
     }
-
 }

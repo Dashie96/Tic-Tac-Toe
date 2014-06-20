@@ -8,7 +8,7 @@ package tic.tac.toe;
 
 /**
  *
- * @author eslaweski
+ * @author Dashie96
  */
 public class Coordinate
 {

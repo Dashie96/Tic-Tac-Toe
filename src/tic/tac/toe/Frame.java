@@ -9,7 +9,7 @@ import javax.swing.JTable;
 
 /**
  *
- * @author 20142600
+ * @author Dashie96
  */
 public class Frame extends javax.swing.JFrame
 {
@@ -27,7 +27,11 @@ public class Frame extends javax.swing.JFrame
         initComponents();
         initTable();
         if (!rule.turn()) {
+            ai.firstTurn();
             ai.takeTurn(this, rule);
+        }
+        else{
+            ai.secondTurn();
         }
         jLabel1.setText(winner);
     }
@@ -468,11 +472,14 @@ public class Frame extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jButton10ActionPerformed
         //stuff i need to reset
         initTable();
+        String win = winner;
         winner = "Good Luck";
         jLabel1.setText(winner);
         rule.turnReset();
         rule.resetWinner();
         gameover = false; 
+        if(win.equalsIgnoreCase("The AI won!"))
+        ai.reset();
         if (!rule.turn()) {
             ai.takeTurn(this, rule);
         }

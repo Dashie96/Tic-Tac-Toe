@@ -8,7 +8,7 @@ package tic.tac.toe;
 
 /**
  *
- * @author 20142600
+ * @author Dashie96
  */
 public class TicTacToe
 {
